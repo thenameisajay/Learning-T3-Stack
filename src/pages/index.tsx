@@ -14,7 +14,7 @@ export default function Home() {
     console.log("User is not logged in");
   }
 
-  const { data } = api.post.getAll.useQuery();
+  const { data } = api.posts.getAll.useQuery();
 
   console.log("Posts", data);
 
@@ -67,6 +67,18 @@ export default function Home() {
             <>
               <div className="  w-32 rounded-full  bg-violet-600  p-4 text-center text-base  text-white ">
                 <SignInButton />
+              </div>
+            </>
+          )}
+          {data && user.isSignedIn && (
+            <>
+              <div id="post">
+                {data.map((post) => (
+                  <div key={post.id}>
+                    <h2>{post.authorId}</h2>
+                    <p>{post.content}</p>
+                  </div>
+                ))}
               </div>
             </>
           )}
