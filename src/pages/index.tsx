@@ -3,8 +3,22 @@ import Link from "next/link";
 
 import { api } from "~/utils/api";
 
+import { useUser } from "@clerk/nextjs";
+
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
+
+  const user = useUser();
+
+  if (user) {
+    console.log("User is logged in", user);
+  } else {
+    console.log("User is not logged in");
+  }
+
+  const { data } = api.post.getAll.useQuery();
+
+  console.log("Posts", data);
 
   return (
     <>
