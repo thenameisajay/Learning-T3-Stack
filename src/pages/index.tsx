@@ -3,11 +3,9 @@ import Link from "next/link";
 
 import { api } from "~/utils/api";
 
-import { useUser } from "@clerk/nextjs";
+import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
-
   const user = useUser();
 
   if (user) {
@@ -57,8 +55,21 @@ export default function Home() {
             </Link>
           </div>
           <p className="text-2xl text-white">
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+            Hello {user ? user.user?.firstName : "Hello World"}
           </p>
+          {user.isSignedIn ? (
+            <>
+              <div className="  w-32 rounded-full bg-violet-600 p-4  text-center text-base text-white ">
+                <SignOutButton />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="  w-32 rounded-full  bg-violet-600  p-4 text-center text-base  text-white ">
+                <SignInButton />
+              </div>
+            </>
+          )}
         </div>
       </main>
     </>
