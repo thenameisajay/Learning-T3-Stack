@@ -33,10 +33,12 @@ export const postRouter = createTRPCRouter({
 
     console.log("Users", users);
 
-    return posts.map((post) => ({
-      ...post,
-      author: users.find((user) => user.id === post.authorId),
-    }));
+    // This won't work because post authorID is not the same as user ID ever
+    // return posts.map((post) => ({
+    //   ...post,
+    //   author: users.find((user) => user.id === post.authorId),
+    // }));
+    return posts;
   }),
 });
 
