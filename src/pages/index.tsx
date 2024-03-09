@@ -3,9 +3,11 @@ import Head from "next/head";
 import Image from "next/image";
 import { api } from "~/utils/api";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { type RouterOutputs } from "~/utils/api";
 
 import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
+dayjs.extend(relativeTime);
 
 const CreatePostWizard = () => {
   const { user } = useUser();
@@ -70,8 +72,9 @@ const PostView = ({
                     />
                     <h2 className="mx-1">{post.authorId}</h2>
                     <div className="flex w-full items-end justify-end   text-white">
-                      <p className="text-end">
-                        {dayjs(post.createdAt).format("HH:mm, MMMM DD, YYYY")}
+                      <p className="text-end font-thin">
+                        ·<span> </span>
+                        {`${dayjs(post.createdAt).fromNow()}`}
                       </p>
                     </div>
                   </div>
