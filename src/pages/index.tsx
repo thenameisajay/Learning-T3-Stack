@@ -8,6 +8,8 @@ import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
 export default function Home() {
   const { user } = useUser();
 
+  const isUserSignedIn = useUser().isSignedIn;
+
   if (user) {
     console.log("User is logged in", user);
   } else {
@@ -26,7 +28,7 @@ export default function Home() {
         <meta name="description" content="Learning create-t3-app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <main className="">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           {useUser().isSignedIn === false && (
             <>
@@ -38,7 +40,7 @@ export default function Home() {
           )}
 
           <p className="text-2xl text-white">
-            {useUser().isSignedIn === true
+            {isUserSignedIn === true
               ? `Welcome ${user?.firstName}`
               : "Hello there! Please sign in to continue."}
           </p>
@@ -93,13 +95,13 @@ export default function Home() {
             )}
             <div className="flex flex-col gap-4">
               <div className="rounded-xl bg-white/10 p-4 text-white">
-                <>
+                {isUserSignedIn === true && (
                   <input
                     type="text"
                     placeholder="What's on your mind?"
                     className="w-full bg-transparent px-1 text-white "
                   />
-                </>
+                )}
               </div>
             </div>
           </div>
