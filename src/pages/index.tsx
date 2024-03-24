@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Head from "next/head";
 
 import Image from "next/image";
@@ -16,6 +17,7 @@ dayjs.extend(relativeTime);
 const CreatePostWizard = () => {
   const { user } = useUser();
   const isUserSignedIn = useUser().isSignedIn;
+  const [input, setInput] = useState("");
 
   const utils = api.useUtils();
 
@@ -47,21 +49,33 @@ const CreatePostWizard = () => {
           alt={user.firstName ?? "User"}
         ></Image>
         {isUserSignedIn === true && (
-          <input
-            type="text"
-            placeholder="What's on your mind?"
-            className="w-full bg-transparent px-1 text-white "
-            disabled={isPosting}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                const content = e.currentTarget.value;
-                if (content) {
-                  mutate({ content });
-                  e.currentTarget.value = "";
+          <>
+            <input
+              type="text"
+              placeholder="What's on your mind?"
+              className="w-full bg-transparent px-1 text-white "
+              disabled={isPosting}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <button
+              className="ml-2 w-24 rounded-md bg-blue-500 px-2 py-1 text-white"
+              disabled={isPosting}
+              onClick={() => {
+                if (input.length < 1) {
+                  toast.error("Please enter a message before posting.");
+                  return;
                 }
-              }
-            }}
-          />
+
+                mutate({
+                  content: input,
+                });
+                setInput("");
+              }}
+            >
+              Post
+            </button>
+          </>
         )}
       </div>
     </div>
