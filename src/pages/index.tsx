@@ -9,6 +9,7 @@ import { type RouterOutputs } from "~/utils/api";
 import Loading from "~/components/loading";
 
 import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
+import toast from "react-hot-toast";
 
 dayjs.extend(relativeTime);
 
@@ -21,6 +22,10 @@ const CreatePostWizard = () => {
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSettled: async () => {
       await utils.posts.getAll.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors?.content;
+      toast.error(errorMessage?.[0] ?? "An error occurred");
     },
   });
 
