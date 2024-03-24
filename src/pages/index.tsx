@@ -29,8 +29,8 @@ const CreatePostWizard = () => {
   }
 
   return (
-    <div className="relative  top-72 rounded-xl bg-white/10 p-4  text-white">
-      <div className=" flex">
+    <div className=" absolute bottom-2.5    flex    w-4/12 rounded-xl bg-white/10 p-4  text-white">
+      <div className=" flex w-full">
         <Image
           className="mb-2 mr-2 h-8 w-8 rounded-full border-2 border-white bg-white/10"
           width={100}
@@ -154,16 +154,16 @@ export default function Home() {
       </Head>
       <main className="flex h-screen  items-center justify-center">
         <div className=" flex h-screen w-full flex-col items-center justify-center border-x border-slate-400 md:max-w-2xl">
-          <div className="  relative  bottom-72 flex   w-full items-end  justify-end  p-4">
+          <div className="     flex   w-full items-end  justify-center  p-4">
             {user ? (
               <>
-                <div className="  w-32 rounded-full bg-violet-600 p-4  text-center text-base text-white ">
+                <div className=" absolute    right-24 top-4  w-32 rounded-full  bg-blue-500 p-4  text-center text-base text-white ">
                   <SignOutButton />
                 </div>
               </>
             ) : (
               <>
-                <div className="  w-32 rounded-full  bg-violet-600  p-4 text-center text-base  text-white ">
+                <div className="  absolute bottom-80   w-32   rounded-full  bg-blue-500 p-4 text-center text-base  text-white ">
                   <SignInButton />
                 </div>
               </>
