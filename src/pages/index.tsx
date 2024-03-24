@@ -16,11 +16,11 @@ const CreatePostWizard = () => {
   const { user } = useUser();
   const isUserSignedIn = useUser().isSignedIn;
 
-  const { refetch } = api.posts.getAll.useQuery();
+  const utils = api.useUtils();
 
-  const { mutate } = api.posts.create.useMutation({
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSettled: async () => {
-      await refetch(); // Hacky way to refresh the feed , use invalidation instead
+      await utils.posts.getAll.invalidate();
     },
   });
 
@@ -46,6 +46,7 @@ const CreatePostWizard = () => {
             type="text"
             placeholder="What's on your mind?"
             className="w-full bg-transparent px-1 text-white "
+            disabled={isPosting}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 const content = e.currentTarget.value;
