@@ -22,8 +22,8 @@ The blog application leverages several cutting-edge technologies and libraries, 
 - **[Tailwind CSS](https://tailwindcss.com)**: A utility-first CSS framework for designing custom UIs without leaving your HTML.
 - **[tRPC](https://trpc.io)**: Enables end-to-end typesafe APIs, simplifying data fetching and mutations.
 - **[Zod](https://zod.dev/)**: A TypeScript-first schema validation library.
-- **[TypeScript](https://www.typescriptlang.org)**: A superset of JavaScript that adds static types.
 - **[React Hook Form](https://react-hook-form.com/)**: A library for managing forms in React (not utilized in this project since I'm familiar with this library).
+- **[Upstash](https://upstash.com/)**: A serverless database service that provides scalable and easy-to-use databases, perfect for serverless applications and microservices. It supports Redis and Kafka, offering low latency and high throughput , Used as a rate limiter [Link](https://github.com/upstash/ratelimit)
 
 ### Additional Notes
 
