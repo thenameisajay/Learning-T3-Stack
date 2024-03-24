@@ -5,8 +5,10 @@ import { api } from "~/utils/api";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { type RouterOutputs } from "~/utils/api";
+import Loading from "~/components/loading";
 
 import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
+
 dayjs.extend(relativeTime);
 
 const CreatePostWizard = () => {
@@ -100,7 +102,7 @@ export default function Home() {
   const { data, isLoading } = api.posts.getAll.useQuery();
 
   if (user && isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (user) {
