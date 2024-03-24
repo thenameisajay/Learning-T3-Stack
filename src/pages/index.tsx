@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { type RouterOutputs } from "~/utils/api";
+
 import Loading from "~/components/loading";
 
 import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
@@ -14,6 +15,14 @@ dayjs.extend(relativeTime);
 const CreatePostWizard = () => {
   const { user } = useUser();
   const isUserSignedIn = useUser().isSignedIn;
+
+  const { refetch } = api.posts.getAll.useQuery();
+
+  const { mutate } = api.posts.create.useMutation({
+    onSettled: async () => {
+      await refetch(); // Hacky way to refresh the feed , use invalidation instead
+    },
+  });
 
   if (!user) {
     return false;
@@ -37,6 +46,15 @@ const CreatePostWizard = () => {
             type="text"
             placeholder="What's on your mind?"
             className="w-full bg-transparent px-1 text-white "
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const content = e.currentTarget.value;
+                if (content) {
+                  mutate({ content });
+                  e.currentTarget.value = "";
+                }
+              }
+            }}
           />
         )}
       </div>
@@ -60,7 +78,7 @@ const PostView = ({
             data.map((post) => (
               <div
                 key={post.id}
-                className="rounded-xl bg-white/10 p-4 text-white"
+                className=" my-4 rounded-xl bg-white/10 p-4 text-white"
               >
                 <div className="flex  w-full flex-col ">
                   <div className=" flex items-start justify-start ">

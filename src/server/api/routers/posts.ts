@@ -44,6 +44,24 @@ export const postRouter = createTRPCRouter({
     // }));
     return posts;
   }),
+  create: privateProcedure
+    .input(
+      z.object({
+        content: z.string().min(1).max(280).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const authorId = ctx.currentUser;
+
+      const post = await ctx.db.post.create({
+        data: {
+          authorId,
+          content: input.content ?? "", // Provide a default value for content
+        },
+      });
+
+      return post;
+    }),
 });
 
 // create: publicProcedure
@@ -64,22 +82,3 @@ export const postRouter = createTRPCRouter({
 //     orderBy: { createdAt: "desc" },
 //   });
 // }),
-
-create: privateProcedure
-  .input(
-    z.object({
-      content: z.string().emoji().min(1).max(280),
-    }),
-  )
-  .mutation(async ({ ctx, input }) => {
-    const authorId = ctx.currentUser.id;
-
-    const post = await ctx.db.post.create({
-      data: {
-        authorId,
-        content: input.content,
-      },
-    });
-
-    return post;
-  });

@@ -34,11 +34,11 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
 
   const session = getAuth(req);
 
-  const user = session?.user;
+  const userId = session?.userId;
 
   return {
     db,
-    currentUser: user,
+    currentUser: userId,
   };
 };
 
