@@ -94,6 +94,20 @@ const PostView = ({
   );
 };
 
+const Feed = () => {
+  const { data, isLoading } = api.posts.getAll.useQuery();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!data) {
+    return <p>No posts yet</p>;
+  }
+
+  return <PostView data={data} />;
+};
+
 export default function Home() {
   const { user } = useUser();
 
@@ -145,7 +159,7 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col gap-4">
-              <PostView data={data} />
+              <Feed />
 
               <CreatePostWizard />
             </div>

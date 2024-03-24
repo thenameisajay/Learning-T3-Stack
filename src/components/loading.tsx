@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Loading() {
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-gray-900">
+    <div className="flex h-screen w-full items-center justify-center">
       <div role="status">
         <svg
           aria-hidden="true"
