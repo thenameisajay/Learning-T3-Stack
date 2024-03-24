@@ -90,42 +90,46 @@ const PostView = ({
   data: RouterOutputs["posts"]["getAll"] | undefined;
 }) => {
   const { user } = useUser();
+
+  const isUserSignedIn = useUser().isSignedIn;
+
+  console.log("User is going", user);
   return (
     <>
       {data && user && (
         <div id="post">
-          {data.length > 0 ? (
-            data.map((post) => (
-              <div
-                key={post.id}
-                className=" my-4 rounded-xl bg-white/10 p-4 text-white"
-              >
-                <div className="flex  w-full flex-col ">
-                  <div className=" flex items-start justify-start ">
-                    <Image
-                      src={user.imageUrl || noImageAvatar}
-                      alt={post.authorId || "User"}
-                      width={50}
-                      height={50}
-                      className="mb-2 mr-2 h-8 w-8 rounded-full border-2 border-white bg-white/10"
-                    />
-                    <h2 className="mx-1">{post.authorId}</h2>
-                    <div className="flex w-full items-end justify-end   text-white">
-                      <p className="text-end font-thin">
-                        ·<span> </span>
-                        {`${dayjs(post.createdAt).fromNow()}`}
-                      </p>
+          {data.length > 0
+            ? data.map((post) => (
+                <div
+                  key={post.id}
+                  className=" my-4 rounded-xl bg-white/10 p-4 text-white"
+                >
+                  <div className="flex  w-full flex-col ">
+                    <div className=" flex items-start justify-start ">
+                      <Image
+                        src={user.imageUrl || noImageAvatar}
+                        alt={post.authorId || "User"}
+                        width={50}
+                        height={50}
+                        className="mb-2 mr-2 h-8 w-8 rounded-full border-2 border-white bg-white/10"
+                      />
+                      <h2 className="mx-1">{post.authorId}</h2>
+                      <div className="flex w-full items-end justify-end   text-white">
+                        <p className="text-end font-thin">
+                          ·<span> </span>
+                          {`${dayjs(post.createdAt).fromNow()}`}
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  <p>{post.content}</p>
                 </div>
-                <p>{post.content}</p>
-              </div>
-            ))
-          ) : (
-            <div>
-              <p>No posts yet</p>
-            </div>
-          )}
+              ))
+            : isUserSignedIn && (
+                <div>
+                  <p>No posts yet</p>
+                </div>
+              )}
         </div>
       )}
     </>
@@ -134,12 +138,13 @@ const PostView = ({
 
 const Feed = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
+  const isUserSignedIn = useUser().isSignedIn;
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (!data) {
+  if (!data && isUserSignedIn) {
     return <p>No posts yet</p>;
   }
 
@@ -181,11 +186,11 @@ export default function Home() {
                 </div>
               </>
             ) : (
-              <>
+              !isLoading && (
                 <div className="  absolute bottom-80   w-32   rounded-full  bg-blue-500 p-4 text-center text-base  text-white ">
                   <SignInButton />
                 </div>
-              </>
+              )
             )}
           </div>
 
@@ -193,7 +198,9 @@ export default function Home() {
             <p className="tex text-2xl text-white">
               {isUserSignedIn === true
                 ? `Welcome ${user?.firstName}`
-                : "Hello there! Please sign in to continue."}
+                : isLoading
+                  ? ""
+                  : "Hello there! Please sign in to continue."}
             </p>
 
             <div className="flex flex-col gap-4">
